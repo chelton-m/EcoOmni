@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecoomni-api
+  labels:
+    app: ecoomni-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecoomni-api
+  template:
+    metadata:
+      labels:
+        app: ecoomni-api
+    spec:
+      containers:
+        - name: api
+          image: ecoomni-api:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: sqlite:////app/app.db
+            - name: OLLAMA_BASE_URL
+              value: http://ollama:11434
+            - name: OLLAMA_MODEL
+              value: llama3
+          volumeMounts:
+            - name: app-data
+              mountPath: /app
+      volumes:
+        - name: app-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecoomni-api
+spec:
+  selector:
+    app: ecoomni-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+
+
