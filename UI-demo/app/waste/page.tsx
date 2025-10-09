@@ -65,7 +65,7 @@ export default function WastePipeline() {
             <CountUp end={342} duration={2} />
             <span className="text-lg"> units</span>
           </div>
-          <p className="text-xs text-gray-500 mt-2">This month's collection</p>
+          <p className="text-xs text-gray-500 mt-2">This month&apos;s collection</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6">

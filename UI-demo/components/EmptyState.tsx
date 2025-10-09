@@ -173,7 +173,7 @@ export default function EmptyState() {
               className="text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed"
             >
               Transform scattered sales, waste, and inventory data into a single intelligent dashboard. 
-              <span className="text-eco-green-600 font-semibold"> Connect the dots</span> between what's sold, what's wasted, and what's stocked.
+              <span className="text-eco-green-600 font-semibold"> Connect the dots</span> between what&apos;s sold, what&apos;s wasted, and what&apos;s stocked.
             </motion.p>
 
             {/* Feature highlights */}

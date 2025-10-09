@@ -10,9 +10,9 @@ export default function Navigation() {
 
   const navigation = [
     { name: 'Home', href: '#home', icon: HomeIcon },
-    { name: 'Sales', href: '#sales', icon: ChartBarIcon },
-    { name: 'Inventory', href: '#inventory', icon: CubeIcon },
-    { name: 'Waste', href: '#waste', icon: TrashIcon },
+    { name: 'Sales', href: '#sales-section', icon: ChartBarIcon },
+    { name: 'Inventory', href: '#inventory-section', icon: CubeIcon },
+    { name: 'Waste', href: '#waste-section', icon: TrashIcon },
   ];
 
   useEffect(() => {
