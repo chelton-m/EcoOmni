@@ -284,7 +284,7 @@ function Step3({ handleFinish }: any) {
         Success! Your Intelligent Dashboard is Ready
       </h2>
       <p className="text-gray-600 mb-8">
-        We've analyzed your data and connected the dots between sales, waste, and inventory.
+        We&apos;ve analyzed your data and connected the dots between sales, waste, and inventory.
       </p>
 
       <motion.button

@@ -2,7 +2,7 @@
 
 import { useData } from '@/context/DataContext';
 import EmptyState from '@/components/EmptyState';
-import Dashboard from '@/components/Dashboard';
+import ScrollableDashboard from '@/components/ScrollableDashboard';
 import FileImportModal from '@/components/FileImportModal';
 
 export default function Home() {
@@ -10,7 +10,14 @@ export default function Home() {
 
   return (
     <>
-      {hasData ? <Dashboard /> : <EmptyState />}
+      {hasData ? <ScrollableDashboard /> : (
+        <>
+          <EmptyState />
+          <div id="demo-dashboard">
+            <ScrollableDashboard />
+          </div>
+        </>
+      )}
       {showImportModal && <FileImportModal />}
     </>
   );

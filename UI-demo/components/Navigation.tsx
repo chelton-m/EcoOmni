@@ -1,49 +1,89 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { useData } from '@/context/DataContext';
 import { HomeIcon, ChartBarIcon, CubeIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 export default function Navigation() {
-  const pathname = usePathname();
   const { setShowImportModal, hasData } = useData();
+  const [activeSection, setActiveSection] = useState('home');
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'Sales', href: '/sales', icon: ChartBarIcon },
-    { name: 'Inventory', href: '/inventory', icon: CubeIcon },
-    { name: 'Waste', href: '/waste', icon: TrashIcon },
+    { name: 'Home', href: '#home', icon: HomeIcon },
+    { name: 'Sales', href: '#sales', icon: ChartBarIcon },
+    { name: 'Inventory', href: '#inventory', icon: CubeIcon },
+    { name: 'Waste', href: '#waste', icon: TrashIcon },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navigation.map(item => item.href.substring(1));
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+
+      // If we're at the top, set to home
+      if (window.scrollY < 100) {
+        setActiveSection('home');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-20">
           <div className="flex">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-eco-green-500 to-eco-green-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-eco-green-600 to-eco-blue-600 bg-clip-text text-transparent">
-                  EcoOmni
-                </span>
-              </div>
+              <button
+                onClick={scrollToTop}
+                className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+              >
+                <img 
+                  src="/logo/EcoOmni-Logo-top-removebg-preview.png" 
+                  alt="EcoOmni Logo" 
+                  className="h-12 w-auto"
+                  onError={(e) => {
+                    console.error('Logo failed to load:', e);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </button>
             </div>
 
             {/* Navigation Links */}
             <div className="hidden sm:ml-8 sm:flex sm:space-x-4">
               {navigation.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href;
+                const isActive = activeSection === item.href.substring(1);
                 return (
-                  <Link
+                  <button
                     key={item.name}
-                    href={item.href}
+                    onClick={() => scrollToSection(item.href)}
                     className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
                         ? 'text-eco-green-700 bg-eco-green-50'
@@ -52,7 +92,7 @@ export default function Navigation() {
                   >
                     <Icon className="w-5 h-5 mr-2" />
                     {item.name}
-                  </Link>
+                  </button>
                 );
               })}
             </div>
@@ -75,4 +115,3 @@ export default function Navigation() {
     </nav>
   );
 }
-
