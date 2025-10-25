@@ -138,12 +138,12 @@
                 if (API_URL === 'DEMO_MODE') {
                     // Simulate API response for demo
                     const demoUsers = {
-                        'director': { role: 'director', user_id: 1, username: 'director' },
-                        'admin': { role: 'system_admin', user_id: 2, username: 'admin' },
-                        'testuser': { role: 'operational_manager', user_id: 3, username: 'testuser' }
+                        'director': { role: 'director', user_id: 1, username: 'director', password: 'director123' },
+                        'admin': { role: 'system_admin', user_id: 2, username: 'admin', password: 'admin123' },
+                        'testuser': { role: 'operational_manager', user_id: 3, username: 'testuser', password: 'testpass123' }
                     };
                     
-                    if (demoUsers[username] && password === 'director123') {
+                    if (demoUsers[username] && demoUsers[username].password === password) {
                         const data = {
                             access_token: 'demo_token_' + Date.now(),
                             token_type: 'bearer',
