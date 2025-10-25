@@ -1,28 +1,29 @@
-version: "3.9"
 services:
   api:
     build: .
     image: ecoomni-api:dev
     container_name: ecoomni-api
     environment:
-      - DATABASE_URL=sqlite:////app/app.db
-      - OLLAMA_BASE_URL=http://ollama:11434
-      - OLLAMA_MODEL=llama3
+      - DATABASE_URL=postgresql://ecoomni_user:ecoomni_pass@postgres:5432/ecoomni_db
+      - SECRET_KEY=docker-test-secret-key-change-in-production
     ports:
       - "8001:8000"
     depends_on:
-      - ollama
+      - postgres
+    command: sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ecoomni-ollama
-    ports:
-      - "11434:11434"
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecoomni-postgres
     environment:
-      - OLLAMA_KEEP_ALIVE=24h
+      - POSTGRES_USER=ecoomni_user
+      - POSTGRES_PASSWORD=ecoomni_pass
+      - POSTGRES_DB=ecoomni_db
+    ports:
+      - "5433:5432"  # Use different port to avoid conflicts
     volumes:
-      - ollama_data:/root/.ollama
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  ollama_data:
+  postgres_data:
 

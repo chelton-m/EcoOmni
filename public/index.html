@@ -1,122 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoOmni Onboarding</title>
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
-    .row { margin-bottom: 1rem; }
-    label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
-    select, input[type="file"] { padding: 0.5rem; width: 320px; }
-    .mapping { display: grid; grid-template-columns: 200px 1fr; gap: 1rem; align-items: center; max-width: 720px; }
-    .error { color: #b00020; }
-    .success { color: #1b5e20; }
-    pre { background: #f6f8fa; padding: 0.75rem; overflow: auto; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoOmni API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .api-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .api-link:hover {
+            background: #5568d3;
+        }
+    </style>
 </head>
 <body>
-  <h1>EcoOmni Onboarding</h1>
-  <div class="row">
-    <input id="fileInput" type="file" accept=".csv,.xlsx,.xls" />
-    <button id="analyzeBtn">Analyze</button>
-  </div>
-  <div id="status" class="row"></div>
-
-  <div id="mappingUI" class="mapping" style="display:none;">
-    <div>
-      <label for="item_name">Item Name</label>
+    <div class="container">
+        <h1>🌱 EcoOmni API</h1>
+        <p>Authentication API is running successfully!</p>
+        <a href="/docs" class="api-link">Swagger UI</a>
+        <a href="/redoc" class="api-link">ReDoc</a>
     </div>
-    <div>
-      <select id="item_name"></select>
-    </div>
-
-    <div>
-      <label for="quantity_sold">Quantity Sold</label>
-    </div>
-    <div>
-      <select id="quantity_sold"></select>
-    </div>
-
-    <div>
-      <label for="sale_price">Sale Price</label>
-    </div>
-    <div>
-      <select id="sale_price"></select>
-    </div>
-  </div>
-
-  <h3>AI Suggested Mapping</h3>
-  <pre id="suggestion"></pre>
-
-  <script>
-    const API_BASE = window.location.origin;
-
-    function setStatus(message, isError=false) {
-      const el = document.getElementById('status');
-      el.textContent = message;
-      el.className = isError ? 'row error' : 'row success';
-    }
-
-    function populateSelect(selectEl, options, selectedValue) {
-      selectEl.innerHTML = '';
-      const nullOption = document.createElement('option');
-      nullOption.value = '';
-      nullOption.textContent = '— None —';
-      selectEl.appendChild(nullOption);
-
-      options.forEach(opt => {
-        const o = document.createElement('option');
-        o.value = opt;
-        o.textContent = opt;
-        if (selectedValue && opt === selectedValue) {
-          o.selected = true;
-        }
-        selectEl.appendChild(o);
-      });
-    }
-
-    async function analyzeFile(file) {
-      const form = new FormData();
-      form.append('file', file);
-      const url = `${API_BASE}/onboarding/analyze-file/`;
-      try {
-        const res = await fetch(url, { method: 'POST', body: form });
-        if (!res.ok) {
-          let detail = res.statusText;
-          try { const j = await res.json(); detail = j.detail || detail; } catch {}
-          throw new Error(`${res.status} ${detail}`);
-        }
-        return res.json();
-      } catch (e) {
-        console.error('Fetch failed', { error: e, url });
-        throw e;
-      }
-    }
-
-    document.getElementById('analyzeBtn').addEventListener('click', async () => {
-      const fileInput = document.getElementById('fileInput');
-      if (!fileInput.files || fileInput.files.length === 0) {
-        setStatus('Please select a file first.', true);
-        return;
-      }
-      setStatus('Analyzing file...');
-      try {
-        const data = await analyzeFile(fileInput.files[0]);
-        const { mapping, columns } = data;
-        document.getElementById('mappingUI').style.display = 'grid';
-
-        populateSelect(document.getElementById('item_name'), columns, mapping.item_name);
-        populateSelect(document.getElementById('quantity_sold'), columns, mapping.quantity_sold);
-        populateSelect(document.getElementById('sale_price'), columns, mapping.sale_price);
-
-        document.getElementById('suggestion').textContent = JSON.stringify(mapping, null, 2);
-        setStatus('AI suggestion loaded. Review and adjust if needed.');
-      } catch (err) {
-        setStatus(err.message || 'Failed to fetch', true);
-      }
-    });
-  </script>
 </body>
 </html>
-
