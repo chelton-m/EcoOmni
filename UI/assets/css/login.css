@@ -77,12 +77,22 @@ body {
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 8px;
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    font-weight: 400;
+    color: #9ca3af;
+    pointer-events: none;
+    transition: all 0.2s;
+    background: white;
+    padding: 0 4px;
 }
 
 .password-container {
@@ -96,6 +106,15 @@ input {
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.3s;
+    background: white;
+}
+
+.input-wrapper input:focus + label,
+.input-wrapper input:not(:placeholder-shown) + label {
+    top: 0;
+    transform: translateY(-50%) scale(0.9);
+    color: #5db579;
+    font-size: 13px;
 }
 
 input:focus {
