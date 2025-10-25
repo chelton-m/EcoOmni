@@ -7,6 +7,8 @@ This directory contains the frontend login system for the EcoOmni application.
 - `login.html` - Main login page with authentication form
 - `dashboard.html` - Dashboard page for Directors/Admins
 - `upload.html` - Upload page for Operational Managers
+- `assets/css/login.css` - Stylesheet for the login page
+- `assets/images/` - Image assets (logos, GIFs)
 - `types/auth.ts` - TypeScript type definitions (for future TypeScript migration)
 
 ## Features
