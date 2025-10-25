@@ -4,352 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoOmni - Login</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5016 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            display: flex;
-            width: 100%;
-            max-width: 1100px;
-            overflow: hidden;
-        }
-
-        .illustration-section {
-            flex: 1;
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            padding: 60px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .illustration-content {
-            text-align: center;
-            max-width: 400px;
-        }
-
-        .illustration-img {
-            width: 100%;
-            max-width: 350px;
-            margin-bottom: 30px;
-        }
-
-        .form-section {
-            flex: 1;
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .logo {
-            margin-bottom: 40px;
-        }
-
-
-
-        .logo h2 {
-            font-size: 28px;
-            color: #333;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .password-container {
-            position: relative;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            color: #6b7280;
-        }
-
-        .password-toggle:hover {
-            color: #4caf50;
-        }
-
-        input:disabled {
-            background-color: #f3f4f6;
-            cursor: not-allowed;
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0 30px 0;
-            font-size: 14px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6b7280;
-        }
-
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            border-radius: 4px;
-            border: 2px solid #d1d5db;
-            transition: all 0.3s;
-        }
-
-        .remember-me input[type="checkbox"]:hover {
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-
-        .remember-me input[type="checkbox"]:checked {
-            background-color: #4caf50;
-            border-color: #4caf50;
-        }
-
-        .forgot-password {
-            color: #6b7280;
-            text-decoration: none;
-            font-weight: 400;
-            transition: all 0.3s;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-            color: #4caf50;
-        }
-
-        .forgot-password:active {
-            opacity: 0.5;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            background: #fee;
-            border: 1px solid #fcc;
-            color: #c33;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .error-message.show {
-            display: flex;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .demo-credentials {
-            margin-top: 30px;
-            padding: 16px;
-            background: #f0f7ff;
-            border-radius: 8px;
-            border: 1px solid #b3d9ff;
-        }
-
-        .demo-credentials h3 {
-            font-size: 13px;
-            color: #0066cc;
-            margin-bottom: 10px;
-        }
-
-        .demo-credentials p {
-            font-size: 12px;
-            color: #004499;
-            margin: 4px 0;
-        }
-
-        .demo-credentials strong {
-            font-weight: 600;
-        }
-
-        /* Modal Popup for Forgot Password */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-icon {
-            width: 60px;
-            height: 60px;
-            background: #fee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
-
-        .modal-icon-text {
-            font-size: 36px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .modal-close:hover {
-            color: #333;
-        }
-
-        .modal h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .modal p {
-            color: #666;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body>
     <div class="login-container">
         <!-- Left Section: Illustration -->
         <div class="illustration-section">
-            <div class="illustration-content">
-                <!-- GIF Illustration -->
-                <img src="assets/images/log-in-page.gif" alt="Analytics & Insights" class="illustration-img">
-                <h3 style="color: #2e7d32; font-size: 20px; margin-top: 20px;">Analytics & Insights</h3>
-                <p style="color: #4caf50; margin-top: 10px;">Transform data into intelligent decisions</p>
-            </div>
+            <!-- GIF Illustration -->
+            <img src="assets/images/log-in-page.gif" alt="Analytics & Insights" class="illustration-img">
         </div>
 
         <!-- Right Section: Login Form -->
         <div class="form-section">
             <div class="logo">
-                <img src="assets/images/logo-primary.png" alt="EcoOmni Logo" style="height: 50px; margin-bottom: 20px;">
+                <img src="assets/images/logo-primary.png" alt="EcoOmni Logo" style="height: 60px;">
                 <h2>Welcome back</h2>
             </div>
 
@@ -385,8 +56,11 @@
                             required
                             autocomplete="current-password"
                         >
-                        <button type="button" class="password-toggle" onclick="togglePassword()">
-                            👁️
+                        <button type="button" class="password-toggle" onclick="togglePassword()" id="togglePasswordBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -405,14 +79,6 @@
                     Log In
                 </button>
             </form>
-
-            <!-- Demo Credentials -->
-            <div class="demo-credentials">
-                <h3>📋 Demo Credentials</h3>
-                <p><strong>Manager:</strong> testuser / testpass123</p>
-                <p><strong>Director:</strong> director / director123</p>
-                <p><strong>Admin:</strong> admin / admin123</p>
-            </div>
         </div>
     </div>
 
@@ -447,8 +113,10 @@
             const username = usernameInput.value;
             const password = passwordInput.value;
 
-            // Hide error message
+            // Hide error message and remove error styling
             errorMessage.classList.remove('show');
+            usernameInput.classList.remove('error');
+            passwordInput.classList.remove('error');
 
             // Show loading state
             loginBtn.disabled = true;
@@ -487,6 +155,7 @@
                 // AC-5: Show error message and keep user on page
                 errorText.textContent = 'Invalid username or password';
                 errorMessage.classList.add('show');
+                passwordInput.classList.add('error');
                 console.error('Login error:', error);
             } finally {
                 // Reset button state
@@ -500,14 +169,14 @@
         // Password visibility toggle
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.password-toggle');
+            const toggleBtn = document.getElementById('togglePasswordBtn');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
+                toggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
             } else {
                 passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
+                toggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
             }
         }
 
