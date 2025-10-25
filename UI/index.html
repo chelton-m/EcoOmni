@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoOmni - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Left Section: Illustration -->
+        <div class="illustration-section">
+            <!-- GIF Illustration -->
+            <img src="assets/images/log-in-page.gif" alt="Analytics & Insights" class="illustration-img">
+        </div>
+
+        <!-- Right Section: Login Form -->
+        <div class="form-section">
+            <div class="logo">
+                <img src="assets/images/logo-primary.png" alt="EcoOmni Logo" style="height: 60px;">
+                <h2>Welcome back</h2>
+            </div>
+
+            <!-- AC-5: Error Message Display -->
+            <div id="errorMessage" class="error-message">
+                <span>⚠️</span>
+                <span id="errorText">Invalid username or password</span>
+            </div>
+
+            <form id="loginForm">
+                <!-- AC-1: Username Input Field -->
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder=""
+                            required
+                            autocomplete="username"
+                        >
+                        <label for="username">Email</label>
+                    </div>
+                </div>
+
+                <!-- AC-1: Password Input Field (Masked) -->
+                <div class="form-group">
+                    <div class="password-container">
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder=""
+                                required
+                                autocomplete="current-password"
+                            >
+                            <label for="password">Password</label>
+                        </div>
+                        <button type="button" class="password-toggle" onclick="togglePassword()" id="togglePasswordBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember me and Forgot password -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password" onclick="showForgotPasswordModal(); return false;">Forgot password?</a>
+                </div>
+
+                <!-- AC-2: Login Button -->
+                <button type="submit" id="loginBtn" class="btn">
+                    Log In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeForgotPasswordModal()">×</button>
+            <div class="modal-icon">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M73.3334 40C73.3334 21.59 58.4101 6.66666 40.0001 6.66666C21.5901 6.66666 6.66675 21.59 6.66675 40C6.66675 58.41 21.5901 73.3333 40.0001 73.3333C58.4101 73.3333 73.3334 58.41 73.3334 40ZM40.0001 23.3333C40.8841 23.3333 41.732 23.6845 42.3571 24.3096C42.9822 24.9348 43.3334 25.7826 43.3334 26.6667V43.3333C43.3334 44.2174 42.9822 45.0652 42.3571 45.6903C41.732 46.3155 40.8841 46.6667 40.0001 46.6667C39.116 46.6667 38.2682 46.3155 37.6431 45.6903C37.0179 45.0652 36.6667 44.2174 36.6667 43.3333V26.6667C36.6667 25.7826 37.0179 24.9348 37.6431 24.3096C38.2682 23.6845 39.116 23.3333 40.0001 23.3333ZM36.6667 53.3333C36.6667 52.4493 37.0179 51.6014 37.6431 50.9763C38.2682 50.3512 39.116 50 40.0001 50H40.0267C40.9108 50 41.7586 50.3512 42.3838 50.9763C43.0089 51.6014 43.3601 52.4493 43.3601 53.3333C43.3601 54.2174 43.0089 55.0652 42.3838 55.6903C41.7586 56.3155 40.9108 56.6667 40.0267 56.6667H40.0001C39.116 56.6667 38.2682 56.3155 37.6431 55.6903C37.0179 55.0652 36.6667 54.2174 36.6667 53.3333Z" fill="#CF2F2F"/>
+                </svg>
+            </div>
+            <h3>Forgot your password?</h3>
+            <p>Please contact the administrator for a password reset.</p>
+        </div>
+    </div>
+
+    <script>
+        // Use environment variable or default to localhost for local development
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8001/api/auth/login'
+            : 'http://localhost:8001/api/auth/login'; // GitHub Pages: Update to your backend URL
+        const form = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const loginBtn = document.getElementById('loginBtn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        // AC-3: Form submission handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            // Hide error message and remove error styling
+            errorMessage.classList.remove('show');
+            usernameInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+
+            // Show loading state
+            loginBtn.disabled = true;
+            usernameInput.disabled = true;
+            passwordInput.disabled = true;
+            loginBtn.innerHTML = '<span class="loading"></span>Signing in...';
+
+            try {
+                // AC-3: API call to backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // AC-4: Store token and redirect based on role
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('user', JSON.stringify(data));
+
+                    // Role-based redirection
+                    if (data.role === 'operational_manager') {
+                        window.location.href = '/upload.html'; // Upload page for Manager
+                    } else if (data.role === 'director' || data.role === 'system_admin') {
+                        window.location.href = '/dashboard.html'; // Dashboard for Director
+                    }
+                } else {
+                    // AC-5: Display error message on failed login
+                    throw new Error(data.detail || 'Login failed');
+                }
+            } catch (error) {
+                // AC-5: Show error message and keep user on page
+                errorText.textContent = 'Invalid username or password';
+                errorMessage.classList.add('show');
+                passwordInput.classList.add('error');
+                console.error('Login error:', error);
+            } finally {
+                // Reset button state
+                loginBtn.disabled = false;
+                usernameInput.disabled = false;
+                passwordInput.disabled = false;
+                loginBtn.textContent = 'Log In';
+            }
+        });
+
+        // Password visibility toggle
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.getElementById('togglePasswordBtn');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+            }
+        }
+
+        // Forgot Password Modal Functions
+        function showForgotPasswordModal() {
+            const modal = document.getElementById('forgotPasswordModal');
+            modal.classList.add('show');
+        }
+
+        function closeForgotPasswordModal() {
+            const modal = document.getElementById('forgotPasswordModal');
+            modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('forgotPasswordModal');
+            if (event.target === modal) {
+                closeForgotPasswordModal();
+            }
+        }
+    </script>
+</body>
+</html>
