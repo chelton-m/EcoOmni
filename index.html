@@ -7,20 +7,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="UI/assets/css/login.css">
 </head>
 <body>
     <div class="login-container">
         <!-- Left Section: Illustration -->
         <div class="illustration-section">
             <!-- GIF Illustration -->
-            <img src="assets/images/log-in-page.gif" alt="Analytics & Insights" class="illustration-img">
+            <img src="UI/assets/images/log-in-page.gif" alt="Analytics & Insights" class="illustration-img">
         </div>
 
         <!-- Right Section: Login Form -->
         <div class="form-section">
             <div class="logo">
-                <img src="assets/images/logo-primary.png" alt="EcoOmni Logo" style="height: 60px;">
+                <img src="UI/assets/images/logo-primary.png" alt="EcoOmni Logo" style="height: 60px;">
                 <h2>Welcome back</h2>
             </div>
 
@@ -102,9 +102,12 @@
 
     <script>
         // Use environment variable or default to localhost for local development
-        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        // Handle file:// protocol for direct file access
+        const API_URL = (window.location.protocol === 'file:' || 
+                        window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1')
             ? 'http://localhost:8001/api/auth/login'
-            : 'http://localhost:8001/api/auth/login'; // GitHub Pages: Update to your backend URL
+            : 'https://your-backend-url.herokuapp.com/api/auth/login'; // Update this to your deployed backend URL
         const form = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         const errorText = document.getElementById('errorText');
@@ -149,9 +152,9 @@
 
                     // Role-based redirection
                     if (data.role === 'operational_manager') {
-                        window.location.href = '/upload.html'; // Upload page for Manager
+                        window.location.href = 'UI/upload.html'; // Upload page for Manager
                     } else if (data.role === 'director' || data.role === 'system_admin') {
-                        window.location.href = '/dashboard.html'; // Dashboard for Director
+                        window.location.href = 'UI/dashboard.html'; // Dashboard for Director
                     }
                 } else {
                     // AC-5: Display error message on failed login
