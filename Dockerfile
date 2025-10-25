@@ -6,23 +6,25 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install only runtime dependencies (no build tools)
+# Install runtime dependencies and build tools for testing
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 \
+    libpq-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies using pre-built wheels
+# Install Python dependencies (including testing dependencies)
 COPY requirements.txt ./
-RUN pip install --no-cache-dir --only-binary=all -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code and public assets
+# Copy application code, scripts, and tests
 COPY app ./app
 COPY public ./public
+COPY scripts ./scripts
+COPY tests ./tests
 
 # Default envs (override in compose/k8s)
 ENV DATABASE_URL="sqlite:////app/app.db" \
-    OLLAMA_BASE_URL="http://ollama:11434" \
-    OLLAMA_MODEL="llama3"
+    SECRET_KEY="docker-test-secret-key-change-in-production"
 
 EXPOSE 8000
 
