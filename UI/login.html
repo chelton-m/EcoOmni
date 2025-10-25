@@ -102,7 +102,10 @@
 
     <script>
         // Use environment variable or default to localhost for local development
-        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        // Handle file:// protocol for direct file access
+        const API_URL = (window.location.protocol === 'file:' || 
+                        window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1')
             ? 'http://localhost:8001/api/auth/login'
             : '/api/auth/login';
         const form = document.getElementById('loginForm');
